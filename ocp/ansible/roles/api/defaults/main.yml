@@ -4,10 +4,10 @@ app: fevermap-api
 db_name: mariadb
 db_user: dbuser
 db_password: dbpass
-api_build_image: 'registry.redhat.io/ubi8/python-36'
+api_build_image: 'registry.linsol.cloud/ubi8/python-36:latest'
 api_python_version: '3.6'
-api_source_repository_ref: 'master'
-api_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+api_source_repository_ref: 'main'
+api_source_repository_url: 'https://github.com/TouqeerHussain/fevermap.git'
 api_gitlab_webhook_secret: 'glsecret'
 api_replicas: 1
 api_image: "{{ app }}-api"
