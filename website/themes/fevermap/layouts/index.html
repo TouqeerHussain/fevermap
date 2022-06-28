@@ -1,0 +1,31 @@
+{{ define "main" }}
+<!-- Front page contents -->
+
+  <!-- On top show most recent blog posts -->
+  <section class="posts-list breaker">
+    <h2>Recent posts</h2>
+
+    {{ $pag := .Paginate (where .Data.Pages "Type" "news") }}
+    <ul>
+    {{ range $pag.Pages }}
+
+      <li class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a> <small>{{ .Site.Params.dateformat | .Date.Format }}</small></li>
+
+    {{ end }}
+    </ul>
+  </section>
+
+  <!-- Main contents promoting Fevermap -->
+  <section>
+    <img src="/images/ui-overview-web.png" alt="UI overview" id="ui">
+  </section>
+
+  <section class="mission">
+    {{ with .Content }}
+      {{ . }}
+    {{ end }}
+  </section>
+
+  {{ partial "intro.html" . }}
+
+{{ end }}
