@@ -10,7 +10,7 @@
       - apiVersion: image.openshift.io/v1
         kind: ImageStream
         metadata:
-          name: ubi8-python-36
+          name: python-36
           annotations:
             description: Base image to build API onto
             template.alpha.openshift.io/wait-for-ready: "true"
@@ -120,8 +120,6 @@
               from:
                 kind: ImageStreamTag
                 name: 'ubi8-python-36:latest'
-              pullSecret:
-                name: registry-redhat-io-secret
           source:
             type: Git
             git:
