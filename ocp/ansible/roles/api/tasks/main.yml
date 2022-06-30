@@ -119,7 +119,7 @@
             sourceStrategy:
               from:
                 kind: ImageStreamTag
-                name: 'ubi8-python-36:latest'
+                name: 'python-36:latest'
           source:
             type: Git
             git:
@@ -134,7 +134,7 @@
             - imageChange:
                 from:
                   kind: ImageStreamTag
-                  name: 'ubi8-python-36:latest'
+                  name: 'python-36:latest'
               type: ImageChange
             - type: ConfigChange
           runPolicy: Serial

@@ -58,7 +58,7 @@ app_fqdn:
   - 'app-staging.apps.lab.linsol.cloud'
 app_google_analytics_code: "{{ vaut_app_google_analytics_code }}"
 ws_api_url: "https://{{ api_fqdn }}"
-ws_app_url: 'https://{{ app_fqdn }}'
+ws_app_url: 'https://app-staging.apps.lab.linsol.cloud'
 ws_push_api_url: 'https://{{ push_api_fqdn }}'
 app_replicas: 1
 apm_monitoring_js: vault_apm_monitoring_js

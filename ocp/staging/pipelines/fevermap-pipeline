@@ -25,7 +25,7 @@ pipeline {
         containers: [
           containerTemplate(
             name: "jnlp",
-            image: "quay.io/redhat-emea-ssa-team/jenkins-slave-skopeo:master",
+            image: "registry.linsol.cloud/redhat-emea-ssa-team/jenkins-slave-skopeo:master",
             resourceRequestMemory: "512Mi",
             resourceLimitMemory: "1Gi"
           )
@@ -41,7 +41,7 @@ pipeline {
         stage ('Get commit info') {
             steps{
                 script{
-                    git branch: 'master', url: 'https://gitlab.com/fevermap/fevermap.git'
+                    git branch: 'main', url: 'https://github.com/TouqeerHussain/fevermap.git'
                     sh "git rev-parse --short HEAD > .git/commit-id"
                     env.commit_id = readFile('.git/commit-id')
                     env.app_changed = sh(returnStdout: true, script:"/bin/bash -c 'git diff --stat HEAD^|grep -q \" app/\" && echo true || echo false'").trim()
@@ -127,7 +127,7 @@ pipeline {
             
           }
         }
-        stage('Push app images tag to quay.io'){
+        stage('Push app images tag to registry.linsol.cloud'){
           when {
               expression {
                   return env.api_changed == 'true' || env.app_changed == 'true' || env.push_api_changed == 'true';
@@ -139,8 +139,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "fevermap-staging-quay-push-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
                   def srcCatalogRef = openshift.selector("istag", "fevermap-app:latest").object().image.dockerImageReference
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
-                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:latest "
-                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:${env.commit_id} "
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://registry.linsol.cloud/fevermap/fevermap-app:latest "
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://registry.linsol.cloud/fevermap/fevermap-app:${env.commit_id} "
                   
                 }
               }
@@ -149,7 +149,7 @@ pipeline {
             
           }
         }
-        stage('Push api images tag to quay.io'){
+        stage('Push api images tag to registry.linsol.cloud'){
           when {
               expression {
                   return env.api_changed == 'true' || env.app_changed == 'true' || env.push_api_changed == 'true';
@@ -161,8 +161,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "fevermap-staging-quay-push-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
                   def srcCatalogRef = openshift.selector("istag", "fevermap-api:latest").object().image.dockerImageReference
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
-                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-api:latest "
-                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-api:${env.commit_id} "
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://registry.linsol.cloud/fevermap/fevermap-api:latest "
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://registry.linsol.cloud/fevermap/fevermap-api:${env.commit_id} "
                   
                 }
               }
@@ -170,7 +170,7 @@ pipeline {
             notifySlack("[api] tags latest and ${env.commit_id} pushed to Quay.io.")
           }
         }
-        stage('Push push-api images tag to quay.io'){
+        stage('Push push-api images tag to registry.linsol.cloud'){
           when {
               expression {
                   return env.api_changed == 'true' || env.app_changed == 'true' || env.push_api_changed == 'true';
@@ -182,8 +182,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "fevermap-staging-quay-push-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
                   def srcCatalogRef = openshift.selector("istag", "fevermap-push-api:latest").object().image.dockerImageReference
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
-                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-push-api:staging "
-                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-push-api:${env.commit_id} "
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://registry.linsol.cloud/fevermap/fevermap-push-api:staging "
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://registry.linsol.cloud/fevermap/fevermap-push-api:${env.commit_id} "
                   
                 }
               }

@@ -247,8 +247,6 @@
               from:
                 kind: ImageStreamTag
                 name: 'nginx-116:latest'
-              pullSecret:
-                name: registry-redhat-io-secret
               incremental: true
           successfulBuildsHistoryLimit: 5
           triggers:
