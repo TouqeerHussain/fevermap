@@ -35,7 +35,7 @@ pipeline {
     stages{
         stage('Start'){
           steps{
-            //notifySlack("Staging pipeline started.")
+            notifySlack("Staging pipeline started.")
           }
         }
         stage ('Get commit info') {
@@ -67,7 +67,7 @@ pipeline {
                     }
                   }
                 }
-                //notifySlack("[app] change in code triggered build.")
+                notifySlack("[app] change in code triggered build.")
               }
             }
             stage ('Build - api') {
@@ -84,7 +84,7 @@ pipeline {
                     }
                   }
                 }
-                //notifySlack("[api] change in code triggered build.")
+                notifySlack("[api] change in code triggered build.")
               }
             }
             stage ('Build - push-api') {
@@ -101,7 +101,7 @@ pipeline {
                     }
                   }
                 }
-                //notifySlack("[push-api] change in code triggered build.")
+                notifySlack("[push-api] change in code triggered build.")
                 
               }
             }
@@ -123,7 +123,7 @@ pipeline {
                 }
               }
             }
-            //notifySlack("[app, api, push-api] latest tagged with commit ${env.commit_id}.")
+            notifySlack("[app, api, push-api] latest tagged with commit ${env.commit_id}.")
             
           }
         }
@@ -145,7 +145,7 @@ pipeline {
                 }
               }
             }
-            //notifySlack("[app] tags latest and ${env.commit_id} pushed to Quay.io.")
+            notifySlack("[app] tags latest and ${env.commit_id} pushed to Quay.io.")
             
           }
         }
@@ -167,7 +167,7 @@ pipeline {
                 }
               }
             }
-            //notifySlack("[api] tags latest and ${env.commit_id} pushed to Quay.io.")
+            notifySlack("[api] tags latest and ${env.commit_id} pushed to Quay.io.")
           }
         }
         stage('Push push-api images tag to registry.linsol.cloud'){
@@ -188,12 +188,12 @@ pipeline {
                 }
               }
             }
-            //notifySlack("[push-api] tags latest and ${env.commit_id} pushed to Quay.io.")
+            notifySlack("[push-api] tags latest and ${env.commit_id} pushed to Quay.io.")
           }
         }
         stage('Finish'){
           steps{
-            //notifySlack("Staging pipeline executed succesfully.")
+            notifySlack("Staging pipeline executed succesfully.")
           }
         }
     }
